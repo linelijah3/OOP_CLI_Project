@@ -1,6 +1,8 @@
 package oop.project.cli;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -31,6 +33,22 @@ public class Scenarios {
         };
     }
 
+    private static List<Object> parseArguments(String arguments) {
+        System.out.println("placeholder");
+        String[] tokens = arguments.trim().split("//s+");
+        // //s+ will get rid of white space in the arguments passed in
+        List<Object> parsedArgs = new ArrayList<>();
+        for (String token : tokens) {
+            try {
+                parsedArgs.add(Integer.parseInt(token));
+            }
+            catch (NumberFormatException e) {
+                parsedArgs.add(token);
+            }
+        }
+        return parsedArgs;
+    }
+
     /**
      * Takes two positional arguments:
      *  - {@code left: <your integer type>}
@@ -38,8 +56,14 @@ public class Scenarios {
      */
     private static Map<String, Object> add(String arguments) {
         //TODO: Parse arguments and extract values.
-        int left = 0; //or BigInteger, etc.
-        int right = 0;
+        List<Object> parsedArgs = parseArguments(arguments);
+        if (parsedArgs.size() != 2 || !(parsedArgs.get(0) instanceof Integer) || !(parsedArgs.get(1) instanceof Integer)) {
+            throw new IllegalArgumentException("One of the arguments is not an integer\nThe function expects two integer input values");
+        }
+
+        // cast the strings to int types
+        int left = (int) parsedArgs.get(0);
+        int right = (int) parsedArgs.get(1);
         return Map.of("left", left, "right", right);
     }
 
