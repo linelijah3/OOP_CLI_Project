@@ -13,15 +13,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a414a747-b547-429e-a7eb-4f4bf8c692d0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/OOP_CLI_Project.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/oop/project/cli/Scenarios.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/oop/project/cli/Scenarios.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -130,7 +126,6 @@
       <workItem from="1713142389814" duration="109000" />
       <workItem from="1713279365910" duration="11000" />
       <workItem from="1713279546565" duration="4000" />
-      <workItem from="1713735082185" duration="2238000" />
     </task>
     <servers />
   </component>
