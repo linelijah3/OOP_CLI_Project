@@ -28,8 +28,10 @@ public class ScenariosTests {
                 Arguments.of("Missing Argument", "add 1", null),
                 Arguments.of("Extraneous Argument", "add 1 2 3", null),
                 Arguments.of("Not A Number", "add one two", null),
-                Arguments.of("Not An Integer", "add 1.0 2.0", null)
-            );
+                Arguments.of("Not An Integer", "add 1.0 2.0", null),
+                Arguments.of("Not An Integer", "add yippee wahoo", null),
+                Arguments.of("empty", "add", null)
+                );
         }
 
     }

@@ -33,6 +33,12 @@ public class Scenarios {
         };
     }
 
+    /**
+    * Parser helper function that gets rid of white space within the inputted strings
+    * Uses regex in order to trim and split the arguments input
+    * May have to modify later on for other functionality, however, works for simple
+    * functions such as the add and subtract as of right now
+    * */
     private static List<Object> parseArguments(String arguments) {
         System.out.println("placeholder");
         String[] tokens = arguments.trim().split("\\s+");
