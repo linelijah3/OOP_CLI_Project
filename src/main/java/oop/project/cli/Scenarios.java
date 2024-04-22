@@ -36,22 +36,10 @@ public class Scenarios {
     * May have to modify later on for other functionality, however, works for simple
     * functions such as the add and subtract as of right now
     * */
-    private static List<Object> parseArguments(String arguments) {
-        Parser parser;
+    private static List<Token> parseArguments(String arguments) {
+        Parser parser= new Parser();
         System.out.println("placeholder");
-        String[] tokens = arguments.trim().split("\\s+");
-        // //s+ will get rid of white space in the arguments passed in
-        // https://mkyong.com/java/how-to-remove-whitespace-between-string-java/#:~:text=1.,Regex%20explanation.
-        List<Object> parsedArgs = new ArrayList<>();
-        for (String token : tokens) {
-            try {
-                parsedArgs.add(Integer.parseInt(token));
-            }
-            catch (NumberFormatException e) {
-                parsedArgs.add(token);
-            }
-        }
-        return parsedArgs;
+        return parser.parseArguments(arguments);
     }
 
     private static Double parseDouble(Object obj) {
@@ -71,7 +59,7 @@ public class Scenarios {
      */
     private static Map<String, Object> add(String arguments) {
         //TODO: Parse arguments and extract values.
-        List<Object> parsedArgs = parseArguments(arguments);
+        List<Token> parsedArgs = parseArguments(arguments);
         System.out.println("this is for the add function indices");
         System.out.println("this is the first arg index 0: " + parsedArgs.get(0));
         System.out.println("this is the first arg index 1: " + parsedArgs.get(1));
@@ -79,12 +67,12 @@ public class Scenarios {
         if (parsedArgs.size() != 2) {
             throw new IllegalArgumentException("The add function expects two integer input values");
         }
-        if (!(parsedArgs.get(0) instanceof Integer) || !(parsedArgs.get(1) instanceof Integer)) {
+        if (!Objects.equals(parsedArgs.get(0)._typeName, "Integer") || !Objects.equals(parsedArgs.get(1)._typeName, "Integer")) {
             throw new IllegalArgumentException("One of the arguments is not an integer");
         }
         // cast the strings to int types
-        int left = (int) parsedArgs.get(0);
-        int right = (int) parsedArgs.get(1);
+        int left = Integer.valueOf(parsedArgs.get(0)._value);
+        int right = Integer.valueOf(parsedArgs.get(1)._value);
         return Map.of("left", left, "right", right);
     }
 
@@ -96,32 +84,43 @@ public class Scenarios {
      *  - {@code right: <your decimal type>} (required)
      */
     static Map<String, Object> sub(String arguments) {
-        List<Object> tokens = parseArguments(arguments);
+        List<Token> tokens = parseArguments(arguments);
         Map<String, Object> resultMap = new HashMap<>();
-//        Double left = 0.0;
+        Double left = 0.0;
         Double right = null;
-
-        for (int i = 0; i < tokens.size(); i++) {
-            String token = tokens.get(i).toString();
-            if ("--left".equals(token) && i + 1 < tokens.size()) {
-                resultMap.put("left", parseDouble(tokens.get(++i)));
-            } else if ("--right".equals(token) && i + 1 < tokens.size()) {
-                right = parseDouble(tokens.get(++i));
+        boolean leftExists = false, rightExists = false;
+        int leftCount = 0, rightCount = 0, leftIndex = 0, rightIndex = 0;
+        for (int i  =0; i < tokens.size(); i++) {
+            if (tokens.get(i)._commandName.equals("left")) {
+                leftExists = true;
+                leftCount++;
+                leftIndex = i;
+            }
+            if (tokens.get(i)._commandName.equals("right")) {
+                rightExists = true;
+                rightCount++;
+                rightIndex = i;
             }
         }
 
-        if (right == null) {
+        if (!rightExists) {
             throw new IllegalArgumentException("Right operand is required for the sub command.");
         }
 
-        if (!resultMap.containsKey("left") && tokens.size() > 2) {
-            throw new IllegalArgumentException("Sub function expects at most one left argument and one right argument");
+        if (leftCount>1||rightCount>1) {
+            throw new IllegalArgumentException("Sub function expects at most one left argument and one right argument.");
         }
-
+        if ((tokens.size()>2&&!leftExists)||(leftExists&&tokens.size()>3)) {
+            throw new IllegalArgumentException("Too many arguments.");
+        }
         // if left isn't given put optional empty
-        resultMap.putIfAbsent("left", Optional.empty());
+        if (!leftExists) {
+            resultMap.putIfAbsent("left", Optional.empty());
+        } else {
+            resultMap.put("left", Double.valueOf(tokens.get(leftIndex)._value));
+        }
         // if right is given, add it
-        resultMap.put("right", right);
+        resultMap.put("right", Double.valueOf(tokens.get(rightIndex)._value));
 
         return resultMap;
     }
