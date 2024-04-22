@@ -3,7 +3,7 @@ package oop.project.cli;
 public class Token {
     String _typeName = "";
     String _value = "";
-    boolean commandName = false;
+    String _commandName = "";
 
     String getTypeName() {
         return _typeName;
@@ -12,14 +12,14 @@ public class Token {
     String getValue() {
         return _value;
     }
-    boolean getCommandName() {
-        return commandName;
+    String getCommandName() {
+        return _commandName;
     }
     Token(String typeName, String value) {
         _typeName = typeName;
         _value = value;
     }
-    void setCommandName() {
-        commandName = true;
+    void setCommandName(String commandName) {
+        _commandName = commandName;
     }
 }
