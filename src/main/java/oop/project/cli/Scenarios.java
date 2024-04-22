@@ -138,4 +138,15 @@ public class Scenarios {
     //for notable features. This doesn't need to be exhaustive, but this is a
     //good place to test/showcase your functionality in context.
 
+    static String help(String input) {
+        ArrayList<String> commands = new ArrayList<String>();
+        commands.add("calc");
+        commands.add("date");
+
+        if (commands.contains(input)) {
+            return "Help page for (" + input + ") not yet implemented, will be included in the next iteration";
+        } else
+            return "The command (" + input + ") is invalid or has no help page.";
+    }
+
 }
