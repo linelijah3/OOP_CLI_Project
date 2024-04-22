@@ -59,8 +59,9 @@ public class ScenariosTests {
                 Arguments.of("Not A Number", "sub --right two", null),
                 Arguments.of("Overloaded sub function", "sub 1 2 3 4 5 6 7", null),
                 Arguments.of("empty", "sub", null),
-                Arguments.of("Subtraction overflow", "sub 2147483647 -2147483647" , null),
-                Arguments.of("Subtraction underflow", "sub -2147483647 2147483647" , null)
+                Arguments.of("Subtraction overflow", "sub --left 2147483647 --right -2147483647" , null),
+                Arguments.of("Subtraction underflow", "sub --left -2147483647 --right 2147483647" , null),
+                Arguments.of("No named arguments", "sub 1.0 2.0", null)
                 );
         }
 

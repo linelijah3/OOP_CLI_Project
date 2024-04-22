@@ -2,7 +2,6 @@ package oop.project.cli;
 
 import java.time.LocalDate;
 import java.util.*;
-import static java.lang.Double.parseDouble;
 
 public class Scenarios {
 
@@ -38,7 +37,9 @@ public class Scenarios {
     * functions such as the add and subtract as of right now
     * */
     private static List<Object> parseArguments(String arguments) {
+        Parser parser;
         System.out.println("placeholder");
+        parser
         String[] tokens = arguments.trim().split("\\s+");
         // //s+ will get rid of white space in the arguments passed in
         // https://mkyong.com/java/how-to-remove-whitespace-between-string-java/#:~:text=1.,Regex%20explanation.
@@ -165,5 +166,34 @@ public class Scenarios {
     //should have a couple from pain points at least, and likely some others
     //for notable features. This doesn't need to be exhaustive, but this is a
     //good place to test/showcase your functionality in context.
+
+    static String help(String input) {
+        Map<String, String> helpPages = new HashMap<String, String>();
+        helpPages.put("calc", """
+                \n
+                The calc command allows you to run basic math calculations in the CLI.
+                Available operations (command):
+                1. Addition (add)
+                2. Subtraction (sub)
+                3. Square Root (sqrt)
+                
+                Calc is used by entering (calc) followed by the operation, then the input.
+                For example: calc add 1 2 returns 3
+                calc sqrt 4 returns 2
+                calc sub 4 3 returns 1.
+                \n
+                """);
+        helpPages.put("date", """
+                \n
+                The date command takes in a date string formatted yyyy-mm-dd and turns it into a date object.
+                The output is the date that you entered. If you provide no input, it returns today's date.
+                \n
+                """);
+
+        if (helpPages.containsKey(input)) {
+            return helpPages.get(input);
+        } else
+            return "The command (" + input + ") is invalid or has no help page.";
+    }
 
 }
