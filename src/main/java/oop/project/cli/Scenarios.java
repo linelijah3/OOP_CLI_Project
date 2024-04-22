@@ -55,6 +55,14 @@ public class Scenarios {
         return parsedArgs;
     }
 
+    private static Double parseDouble(Object obj) {
+        try {
+            return Double.parseDouble(obj.toString());
+        } catch(NumberFormatException e) {
+            throw new IllegalArgumentException("invalid type, expected double, but got: " + obj);
+        }
+    }
+
     /**
      * Takes two positional arguments:
      *  - {@code left: <your integer type>}
@@ -70,7 +78,7 @@ public class Scenarios {
         System.out.println("this is the first arg index 1: " + parsedArgs.get(1));
 
         if (parsedArgs.size() != 2) {
-            throw new IllegalArgumentException("The function expects two integer input values");
+            throw new IllegalArgumentException("The add function expects two integer input values");
         }
         if (!(parsedArgs.get(0) instanceof Integer) || !(parsedArgs.get(1) instanceof Integer)) {
             throw new IllegalArgumentException("One of the arguments is not an integer");
@@ -89,12 +97,34 @@ public class Scenarios {
      *  - {@code right: <your decimal type>} (required)
      */
     static Map<String, Object> sub(String arguments) {
-        //TODO: Parse arguments and extract values.
-        List<Object> parsedArgs = parseArguments(arguments);
+        List<Object> tokens = parseArguments(arguments);
+        Map<String, Object> resultMap = new HashMap<>();
+//        Double left = 0.0;
+        Double right = null;
 
-        Optional<Double> left = Optional.empty();
-        double right = 0.0;
-        return Map.of("left", left, "right", right);
+        for (int i = 0; i < tokens.size(); i++) {
+            String token = tokens.get(i).toString();
+            if ("--left".equals(token) && i + 1 < tokens.size()) {
+                resultMap.put("left", parseDouble(tokens.get(++i)));
+            } else if ("--right".equals(token) && i + 1 < tokens.size()) {
+                right = parseDouble(tokens.get(++i));
+            }
+        }
+
+        if (right == null) {
+            throw new IllegalArgumentException("Right operand is required for the sub command.");
+        }
+
+        if (!resultMap.containsKey("left") && tokens.size() > 2) {
+            throw new IllegalArgumentException("Sub function expects at most one left argument and one right argument");
+        }
+
+        // if left isn't given put optional empty
+        resultMap.putIfAbsent("left", Optional.empty());
+        // if right is given, add it
+        resultMap.put("right", right);
+
+        return resultMap;
     }
 
     /**
