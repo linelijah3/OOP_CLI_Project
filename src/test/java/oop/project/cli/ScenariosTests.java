@@ -30,7 +30,8 @@ public class ScenariosTests {
                 Arguments.of("Not A Number", "add one two", null),
                 Arguments.of("Not An Integer", "add 1.0 2.0", null),
                 Arguments.of("Not An Integer", "add yippee wahoo", null),
-                Arguments.of("empty", "add", null)
+                Arguments.of("empty", "add", null),
+                Arguments.of("Overloaded add function", "add 1 2 3 4 5 6 7", null)
                 );
         }
 
@@ -53,8 +54,10 @@ public class ScenariosTests {
                 Arguments.of("Missing Value", "sub --right", null),
                 Arguments.of("Extraneous Argument", "sub --right 2.0 extraneous", null),
                 Arguments.of("Misspelled Flag", "sub --write 2.0", null),
-                Arguments.of("Not A Number", "sub --right two", null)
-            );
+                Arguments.of("Not A Number", "sub --right two", null),
+                Arguments.of("Overloaded sub function", "sub 1 2 3 4 5 6 7", null),
+                Arguments.of("empty", "sub", null)
+                );
         }
 
     }
@@ -73,7 +76,9 @@ public class ScenariosTests {
                 Arguments.of("Valid", "sqrt 4", Map.of("number", 4)),
                 Arguments.of("Imperfect Square", "sqrt 3", Map.of("number", 3)),
                 Arguments.of("Zero", "sqrt 0", Map.of("number", 0)),
-                Arguments.of("Negative", "sqrt -1", null)
+                Arguments.of("Negative", "sqrt -1", null),
+                Arguments.of("empty", "sqrt", null),
+                Arguments.of("Additional arguments error", "sqrt 1 2", null)
             );
         }
 
@@ -112,7 +117,8 @@ public class ScenariosTests {
         public static Stream<Arguments> testDate() {
             return Stream.of(
                 Arguments.of("Date", "date 2024-01-01", Map.of("date", LocalDate.of(2024, 1, 1))),
-                Arguments.of("Invalid", "date 20240401", null)
+                Arguments.of("Invalid", "date 20240401", null),
+                Arguments.of("Valid formatting, invalid date", "date 2024-13-13", null)
             );
         }
 

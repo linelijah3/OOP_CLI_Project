@@ -66,11 +66,15 @@ public class Scenarios {
     private static Map<String, Object> add(String arguments) {
         //TODO: Parse arguments and extract values.
         List<Object> parsedArgs = parseArguments(arguments);
+        System.out.println("this is for the add function indices");
         System.out.println("this is the first arg index 0: " + parsedArgs.get(0));
         System.out.println("this is the first arg index 1: " + parsedArgs.get(1));
-        if (parsedArgs.size() != 2 || !(parsedArgs.get(0) instanceof Integer) || !(parsedArgs.get(1) instanceof Integer)) {
-            throw new IllegalArgumentException("One of the arguments is not an integer\n" +
-                    "The function expects two integer input values");
+
+        if (parsedArgs.size() != 2) {
+            throw new IllegalArgumentException("The function expects two integer input values");
+        }
+        if (!(parsedArgs.get(0) instanceof Integer) || !(parsedArgs.get(1) instanceof Integer)) {
+            throw new IllegalArgumentException("One of the arguments is not an integer");
         }
         // cast the strings to int types
         int left = (int) parsedArgs.get(0);
@@ -87,6 +91,8 @@ public class Scenarios {
      */
     static Map<String, Object> sub(String arguments) {
         //TODO: Parse arguments and extract values.
+        List<Object> parsedArgs = parseArguments(arguments);
+
         Optional<Double> left = Optional.empty();
         double right = 0.0;
         return Map.of("left", left, "right", right);
