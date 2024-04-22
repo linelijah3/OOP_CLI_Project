@@ -12,10 +12,6 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a414a747-b547-429e-a7eb-4f4bf8c692d0" name="Changes" comment="replaced regex condition with &quot;\\s+&quot; instead of &quot;//s+&quot; which was an error">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/oop/project/cli/Scenarios.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/oop/project/cli/Scenarios.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/oop/project/cli/ScenariosTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/oop/project/cli/ScenariosTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -142,23 +138,6 @@
       <workItem from="1713142389814" duration="109000" />
       <workItem from="1713279365910" duration="11000" />
       <workItem from="1713279546565" duration="4000" />
-      <workItem from="1713735082185" duration="4302000" />
-    </task>
-    <task id="LOCAL-00001" summary="create argument parser for string and integer types. create add functionality that checks for valid arguments. Returns left and right cast to int types.">
-      <option name="closed" value="true" />
-      <created>1713737751632</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1713737751632</updated>
-    </task>
-    <task id="LOCAL-00002" summary="replaced regex condition with &quot;\\s+&quot; instead of &quot;//s+&quot; which was an error">
-      <option name="closed" value="true" />
-      <created>1713739448749</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1713739448749</updated>
     </task>
     <option name="localTasksCounter" value="3" />
     <servers />
