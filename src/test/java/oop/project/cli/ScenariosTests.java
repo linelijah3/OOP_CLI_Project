@@ -31,7 +31,9 @@ public class ScenariosTests {
                 Arguments.of("Not An Integer", "add 1.0 2.0", null),
                 Arguments.of("Not An Integer", "add yippee wahoo", null),
                 Arguments.of("empty", "add", null),
-                Arguments.of("Overloaded add function", "add 1 2 3 4 5 6 7", null)
+                Arguments.of("Overloaded add function", "add 1 2 3 4 5 6 7", null),
+                Arguments.of("Addition overflow", "add 2147483647 2147483647" , null),
+                Arguments.of("Addition underflow", "add -2147483647 -2147483647" , null)
                 );
         }
 
@@ -56,7 +58,9 @@ public class ScenariosTests {
                 Arguments.of("Misspelled Flag", "sub --write 2.0", null),
                 Arguments.of("Not A Number", "sub --right two", null),
                 Arguments.of("Overloaded sub function", "sub 1 2 3 4 5 6 7", null),
-                Arguments.of("empty", "sub", null)
+                Arguments.of("empty", "sub", null),
+                Arguments.of("Subtraction overflow", "sub 2147483647 -2147483647" , null),
+                Arguments.of("Subtraction underflow", "sub -2147483647 2147483647" , null)
                 );
         }
 
