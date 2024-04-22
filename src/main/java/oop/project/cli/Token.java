@@ -12,13 +12,16 @@ public class Token {
     String getValue() {
         return _value;
     }
+
     String getCommandName() {
         return _commandName;
     }
+
     Token(String typeName, String value) {
         _typeName = typeName;
         _value = value;
     }
+
     void setCommandName(String commandName) {
         _commandName = commandName;
     }

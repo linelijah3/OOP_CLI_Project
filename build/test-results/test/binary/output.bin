@@ -1,0 +1,49 @@
+placeholder
+placeholder
+placeholder
+placeholder
+placeholder
+placeholder
+placeholder
+placeholder
+placeholder
+placeholder
+placeholder
+placeholder
+&this is for the add function indices
+"this is the first arg index 0: 1
+"this is the first arg index 1: 2
+ placeholder
+ &this is for the add function indices
+ "this is the first arg index 0: 1
+!placeholder
+!&this is for the add function indices
+!"this is the first arg index 0: 1
+!"this is the first arg index 1: 2
+"placeholder
+"&this is for the add function indices
+"$this is the first arg index 0: one
+"$this is the first arg index 1: two
+#placeholder
+#&this is for the add function indices
+#$this is the first arg index 0: 1.0
+#$this is the first arg index 1: 2.0
+$placeholder
+$&this is for the add function indices
+$'this is the first arg index 0: yippee
+$&this is the first arg index 1: wahoo
+%placeholder
+%&this is for the add function indices
+%!this is the first arg index 0: 
+&placeholder
+&&this is for the add function indices
+&"this is the first arg index 0: 1
+&"this is the first arg index 1: 2
+'placeholder
+'&this is for the add function indices
+'+this is the first arg index 0: 2147483647
+'+this is the first arg index 1: 2147483647
+(placeholder
+(&this is for the add function indices
+(,this is the first arg index 0: -2147483647
+(,this is the first arg index 1: -2147483647
