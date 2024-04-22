@@ -34,8 +34,10 @@ public class Scenarios {
     }
 
     private static List<Object> parseArguments(String arguments) {
+        Parser parser;
         System.out.println("placeholder");
-        String[] tokens = arguments.trim().split("//s+");
+
+        String[] tokens = arguments.trim().split("\\s+");
         // //s+ will get rid of white space in the arguments passed in
         List<Object> parsedArgs = new ArrayList<>();
         for (String token : tokens) {
