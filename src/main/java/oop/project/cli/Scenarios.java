@@ -33,10 +33,17 @@ public class Scenarios {
         };
     }
 
+    /**
+    * Parser helper function that gets rid of white space within the inputted strings
+    * Uses regex in order to trim and split the arguments input
+    * May have to modify later on for other functionality, however, works for simple
+    * functions such as the add and subtract as of right now
+    * */
     private static List<Object> parseArguments(String arguments) {
         System.out.println("placeholder");
-        String[] tokens = arguments.trim().split("//s+");
+        String[] tokens = arguments.trim().split("\\s+");
         // //s+ will get rid of white space in the arguments passed in
+        // https://mkyong.com/java/how-to-remove-whitespace-between-string-java/#:~:text=1.,Regex%20explanation.
         List<Object> parsedArgs = new ArrayList<>();
         for (String token : tokens) {
             try {
@@ -53,14 +60,22 @@ public class Scenarios {
      * Takes two positional arguments:
      *  - {@code left: <your integer type>}
      *  - {@code right: <your integer type>}
+     *  - add 1 2
+     *  - left is 1, right is 2
      */
     private static Map<String, Object> add(String arguments) {
         //TODO: Parse arguments and extract values.
         List<Object> parsedArgs = parseArguments(arguments);
-        if (parsedArgs.size() != 2 || !(parsedArgs.get(0) instanceof Integer) || !(parsedArgs.get(1) instanceof Integer)) {
-            throw new IllegalArgumentException("One of the arguments is not an integer\nThe function expects two integer input values");
-        }
+        System.out.println("this is for the add function indices");
+        System.out.println("this is the first arg index 0: " + parsedArgs.get(0));
+        System.out.println("this is the first arg index 1: " + parsedArgs.get(1));
 
+        if (parsedArgs.size() != 2) {
+            throw new IllegalArgumentException("The function expects two integer input values");
+        }
+        if (!(parsedArgs.get(0) instanceof Integer) || !(parsedArgs.get(1) instanceof Integer)) {
+            throw new IllegalArgumentException("One of the arguments is not an integer");
+        }
         // cast the strings to int types
         int left = (int) parsedArgs.get(0);
         int right = (int) parsedArgs.get(1);
@@ -76,6 +91,8 @@ public class Scenarios {
      */
     static Map<String, Object> sub(String arguments) {
         //TODO: Parse arguments and extract values.
+        List<Object> parsedArgs = parseArguments(arguments);
+
         Optional<Double> left = Optional.empty();
         double right = 0.0;
         return Map.of("left", left, "right", right);

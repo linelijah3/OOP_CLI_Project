@@ -12,12 +12,6 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a414a747-b547-429e-a7eb-4f4bf8c692d0" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/OOP_CLI_Project.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,6 +61,7 @@
   "keyToString": {
     "Application.Main.executor": "Run",
     "Gradle.OOP_CLI_Project [:Main.main()].executor": "Run",
+    "JUnit.ScenariosTests$Add.testAdd.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
@@ -86,7 +81,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.ScenariosTests$Add.testAdd">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="oop.project.cli.Main" />
       <module name="CliProject.main" />
@@ -100,8 +95,25 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ScenariosTests$Add.testAdd" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CliProject.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="oop.project.cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="oop.project.cli.ScenariosTests" />
+      <option name="MAIN_CLASS_NAME" value="oop.project.cli.ScenariosTests$Add" />
+      <option name="METHOD_NAME" value="testAdd(java.lang.String,java.lang.String,java.lang.Object)" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.ScenariosTests$Add.testAdd" />
         <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
@@ -127,6 +139,7 @@
       <workItem from="1713279365910" duration="11000" />
       <workItem from="1713279546565" duration="4000" />
     </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -144,6 +157,8 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <option name="LAST_COMMIT_MESSAGE" value="" />
+    <MESSAGE value="create argument parser for string and integer types. create add functionality that checks for valid arguments. Returns left and right cast to int types." />
+    <MESSAGE value="replaced regex condition with &quot;\\s+&quot; instead of &quot;//s+&quot; which was an error" />
+    <option name="LAST_COMMIT_MESSAGE" value="replaced regex condition with &quot;\\s+&quot; instead of &quot;//s+&quot; which was an error" />
   </component>
 </project>
