@@ -28,17 +28,49 @@ public class Parser {
                 lastFlag = s;
             } else {
                 if (lastFlag != null) {
-                    Token argToken = new Token("Named Argument", s);
-                    argToken.setCommandName(currentSubcommand + " " + lastFlag);
+                    Token argToken = new Token("filler", s);
+                    //left, right
+                    argToken.setCommandName(lastFlag);
+                    argToken.setTypeName(parseType(argToken));
                     tokenList.add(argToken);
                     lastFlag = null;
                 } else {
-                    tokenList.add(new Token("Argument", s));
+                    Token argToken = new Token("filler", s);
+                    argToken.setTypeName(parseType(argToken));
+                    tokenList.add(argToken);
                 }
             }
         }
-
         return tokenList;
+    }
+    String parseType(Token token) {
+        //1 char and not int -> char
+        //multiple chars and not int or double -> string
+        //int = int
+        //one decimal point = double
+        if (token._value.length()==1) {
+            if (token._value.matches("[^1234567890]")) {
+                return "Character";
+            }
+            return "Integer";
+        } else if (token._value.length()>1) {
+            if (token._value.contains(".")) {
+                String subString = token._value.substring(token._value.indexOf(".")+1);
+                if (subString.contains(".")) {
+                    return "String";
+                } else {
+                    if (token._value.indexOf(".")!=token._value.length()-1) {
+                        if (subString.matches("[^1234567890]")) {
+                            return "String";
+                        }
+                        return "Double";
+                    } else {
+                        return "String";
+                    }
+                }
+            }
+        }
+        return "Error";
     }
 
     Parser() {

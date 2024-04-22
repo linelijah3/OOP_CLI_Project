@@ -25,4 +25,7 @@ public class Token {
     void setCommandName(String commandName) {
         _commandName = commandName;
     }
+    void setTypeName(String typeName) {
+        _typeName = typeName;
+    }
 }

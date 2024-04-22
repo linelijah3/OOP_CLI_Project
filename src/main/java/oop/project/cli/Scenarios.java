@@ -39,7 +39,6 @@ public class Scenarios {
     private static List<Object> parseArguments(String arguments) {
         Parser parser;
         System.out.println("placeholder");
-        parser
         String[] tokens = arguments.trim().split("\\s+");
         // //s+ will get rid of white space in the arguments passed in
         // https://mkyong.com/java/how-to-remove-whitespace-between-string-java/#:~:text=1.,Regex%20explanation.
