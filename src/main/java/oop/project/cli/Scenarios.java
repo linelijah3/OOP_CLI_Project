@@ -1,10 +1,8 @@
 package oop.project.cli;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import static java.lang.Double.parseDouble;
 
 public class Scenarios {
 
@@ -56,6 +54,14 @@ public class Scenarios {
         return parsedArgs;
     }
 
+    private static Double parseDouble(Object obj) {
+        try {
+            return Double.parseDouble(obj.toString());
+        } catch(NumberFormatException e) {
+            throw new IllegalArgumentException("invalid type, expected double, but got: " + obj);
+        }
+    }
+
     /**
      * Takes two positional arguments:
      *  - {@code left: <your integer type>}
@@ -90,25 +96,34 @@ public class Scenarios {
      *  - {@code right: <your decimal type>} (required)
      */
     static Map<String, Object> sub(String arguments) {
-        //TODO: Parse arguments and extract values.
-        List<Object> parsedArgs = parseArguments(arguments);
-        System.out.println("this is for the sub function indices");
-        System.out.println("this is the first arg index 0: " + parsedArgs.get(0));
-        System.out.println("this is the first arg index 1: " + parsedArgs.get(1));
+        List<Object> tokens = parseArguments(arguments);
+        Map<String, Object> resultMap = new HashMap<>();
+//        Double left = 0.0;
+        Double right = null;
 
-        if (parsedArgs.size() != 2) {
-            throw new IllegalArgumentException("The sub function expects two integer input values");
+        for (int i = 0; i < tokens.size(); i++) {
+            String token = tokens.get(i).toString();
+            if ("--left".equals(token) && i + 1 < tokens.size()) {
+                resultMap.put("left", parseDouble(tokens.get(++i)));
+            } else if ("--right".equals(token) && i + 1 < tokens.size()) {
+                right = parseDouble(tokens.get(++i));
+            }
         }
-        if (!(parsedArgs.get(0) instanceof Integer) || !(parsedArgs.get(1) instanceof Integer)) {
-            throw new IllegalArgumentException("One of the arguments is not an integer");
+
+        if (right == null) {
+            throw new IllegalArgumentException("Right operand is required for the sub command.");
         }
-        //Optional<Double> left = Optional.empty();
 
-        double left = (double) parsedArgs.get(0);
-        double right = (double) parsedArgs.get(1);
-        double result = left - right;
+        if (!resultMap.containsKey("left") && tokens.size() > 2) {
+            throw new IllegalArgumentException("Sub function expects at most one left argument and one right argument");
+        }
 
-        return Map.of("left", left, "right", right, "result", result);
+        // if left isn't given put optional empty
+        resultMap.putIfAbsent("left", Optional.empty());
+        // if right is given, add it
+        resultMap.put("right", right);
+
+        return resultMap;
     }
 
     /**
