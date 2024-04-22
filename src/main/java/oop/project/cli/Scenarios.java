@@ -1,10 +1,7 @@
 package oop.project.cli;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class Scenarios {
 
@@ -141,12 +138,30 @@ public class Scenarios {
     //good place to test/showcase your functionality in context.
 
     static String help(String input) {
-        ArrayList<String> commands = new ArrayList<String>();
-        commands.add("calc");
-        commands.add("date");
+        Map<String, String> helpPages = new HashMap<String, String>();
+        helpPages.put("calc", """
+                \n
+                The calc command allows you to run basic math calculations in the CLI.
+                Available operations (command):
+                1. Addition (add)
+                2. Subtraction (sub)
+                3. Square Root (sqrt)
+                
+                Calc is used by entering (calc) followed by the operation, then the input.
+                For example: calc add 1 2 returns 3
+                calc sqrt 4 returns 2
+                calc sub 4 3 returns 1.
+                \n
+                """);
+        helpPages.put("date", """
+                \n
+                The date command takes in a date string formatted yyyy-mm-dd and turns it into a date object.
+                The output is the date that you entered. If you provide no input, it returns today's date.
+                \n
+                """);
 
-        if (commands.contains(input)) {
-            return "Help page for (" + input + ") not yet implemented, will be included in the next iteration";
+        if (helpPages.containsKey(input)) {
+            return helpPages.get(input);
         } else
             return "The command (" + input + ") is invalid or has no help page.";
     }
