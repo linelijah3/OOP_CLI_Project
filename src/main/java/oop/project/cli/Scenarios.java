@@ -40,7 +40,7 @@ public class Scenarios {
     * functions such as the add and subtract as of right now
     * */
     private static List<Object> parseArguments(String arguments) {
-        System.out.println("placeholder for parser");
+        System.out.println("placeholder");
         String[] tokens = arguments.trim().split("\\s+");
         // //s+ will get rid of white space in the arguments passed in
         // https://mkyong.com/java/how-to-remove-whitespace-between-string-java/#:~:text=1.,Regex%20explanation.
