@@ -68,12 +68,18 @@ public class Parser {
                         return "String";
                     }
                 }
+            } else {
+                if (token._value.matches("[^1234567890]")) {
+                    return "String";
+                } else {
+                    return "Integer";
+                }
             }
         }
         return "Error";
     }
 
     Parser() {
-
+        tokenList = new ArrayList<>();
     }
 }
