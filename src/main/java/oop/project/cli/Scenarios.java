@@ -36,6 +36,8 @@ public class Scenarios {
     * Uses regex in order to trim and split the arguments input
     * May have to modify later on for other functionality, however, works for simple
     * functions such as the add and subtract as of right now
+    * @param arguments: <a String>
+    * @return A List of Tokens that make up arguments
     * */
     private static List<Token> parseArguments(String arguments) {
         Parser parser= new Parser();
@@ -43,6 +45,11 @@ public class Scenarios {
         return parser.parseArguments(arguments);
     }
 
+    /**
+     *
+     * @param obj: <int, Double, or String>
+     * @return The value of obj as a Double
+     */
     private static Double parseDouble(Object obj) {
         try {
             return Double.parseDouble(obj.toString());
@@ -53,10 +60,11 @@ public class Scenarios {
 
     /**
      * Takes two positional arguments:
-     *  - {@code left: <your integer type>}
-     *  - {@code right: <your integer type>}
+     *  - {@code left: <int>}
+     *  - {@code right: <int>}
      *  - add 1 2
      *  - left is 1, right is 2
+     * @return A map with left and right
      */
     private static Map<String, Object> add(String arguments) {
         //TODO: Parse arguments and extract values.
@@ -85,10 +93,15 @@ public class Scenarios {
 
     /**
      * Takes two <em>named</em> arguments:
-     *  - {@code left: <your decimal type>} (optional)
+     *  - {@code left: <Double>} (optional)
      *     - If your project supports default arguments, you could also parse
      *       this as a non-optional decimal value using a default of 0.0.
-     *  - {@code right: <your decimal type>} (required)
+     *  - {@code right: <Double>} (required)
+     *  sub --right 1.0 --left 2.0
+     *  left is 2.0, right is 1.0
+     *  sub --right 1
+     *  left is 0.0, right is 1.0
+     *  @return A map with left and right and their values (if valid)
      */
     static Map<String, Object> sub(String arguments) {
         List<Token> tokens = parseArguments(arguments);
@@ -98,11 +111,11 @@ public class Scenarios {
         boolean leftExists = false, rightExists = false;
         int leftCount = 0, rightCount = 0, leftIndex = 0, rightIndex = 0;
         for (int i  =0; i < tokens.size(); i++) {
-            if (tokens.get(i)._commandName.equals("--left")) {
+            if (tokens.get(i)._commandName.equals("--left")&& Objects.equals(tokens.get(i)._typeName, "Double")) {
                 leftExists = true;
                 leftCount++;
                 leftIndex = i;
-            } else if (tokens.get(i)._commandName.equals("--right")) {
+            } else if (tokens.get(i)._commandName.equals("--right")&& Objects.equals(tokens.get(i)._typeName, "Double")) {
                 rightExists = true;
                 rightCount++;
                 rightIndex = i;
@@ -142,6 +155,7 @@ public class Scenarios {
     /**
      * Takes one positional argument:
      *  - {@code number: <your integer type>} where {@code number >= 0}
+     * @return A map containing the number (if valid) and its value
      */
     static Map<String, Object> sqrt(String arguments) {
         //TODO: Parse arguments and extract values.
@@ -163,6 +177,7 @@ public class Scenarios {
      *  - {@code subcommand: "add" | "div" | "sqrt" }, aka one of these values.
      *     - Note: Not all projects support subcommands, but if yours does you
      *       may want to take advantage of this scenario for that.
+     * @return A map containing the subcommand and its name (if valid)
      */
     static Map<String, Object> calc(String arguments) {
         //TODO: Parse arguments and extract values.
@@ -183,6 +198,7 @@ public class Scenarios {
      *    object (say at least yyyy-mm-dd, or whatever you prefer).
      *     - Note: Consider this a type that CANNOT be supported by your library
      *       out of the box and requires a custom type to be defined.
+     * @return A map containing the date as a LocalDate object (if valid)
      */
     static Map<String, Object> date(String arguments) {
         //TODO: Parse arguments and extract values.
@@ -205,7 +221,11 @@ public class Scenarios {
     //should have a couple from pain points at least, and likely some others
     //for notable features. This doesn't need to be exhaustive, but this is a
     //good place to test/showcase your functionality in context.
-
+    /**
+     * Takes one positional argument:
+     *  - {@code input: String}, which is either calc or date
+     * @return A map containing the help text corresponding to the expected use of the input subcommand
+     */
     static Map<String, Object> help(String input) {
         List<Token> tokens = parseArguments(input);
         if (tokens.size()==1) {

@@ -54,6 +54,7 @@ public class ScenariosTests {
                 Arguments.of("Too many rights", "sub --left 1.0 --right 2.0 --right 1.0", null),
                 Arguments.of("Too many lefts", "sub --left 1.0 --left 2.0 --right 1.0", null),
                 Arguments.of("Left Only", "sub --left 1.0", null),
+                Arguments.of("Integers", "sub --left 1 --right 2", null),
                 Arguments.of("Right Only", "sub --right 2.0", Map.of("left", Optional.empty(), "right", 2.0)),
                 Arguments.of("Missing Value", "sub --right", null),
                 Arguments.of("Extraneous Argument", "sub --right 2.0 extraneous", null),
