@@ -26,6 +26,7 @@ public class Scenarios {
             case "sqrt" -> sqrt(arguments);
             case "calc" -> calc(arguments);
             case "date" -> date(arguments);
+            case "help" -> help(arguments);
             default -> throw new IllegalArgumentException("Unknown command.");
         };
     }
@@ -70,6 +71,12 @@ public class Scenarios {
         if (!Objects.equals(parsedArgs.get(0)._typeName, "Integer") || !Objects.equals(parsedArgs.get(1)._typeName, "Integer")) {
             throw new IllegalArgumentException("One of the arguments is not an integer");
         }
+        if (Double.valueOf(parsedArgs.get(0)._value) + Double.valueOf(parsedArgs.get(1)._value) <-2147483648) {
+            throw new IllegalArgumentException("End value cannot be less than -2147483648.");
+        }
+        if (Double.valueOf(parsedArgs.get(0)._value) + Double.valueOf(parsedArgs.get(1)._value) > 2147483647) {
+            throw new IllegalArgumentException("End value cannot be greater than 2147483647.");
+        }
         // cast the strings to int types
         int left = Integer.valueOf(parsedArgs.get(0)._value);
         int right = Integer.valueOf(parsedArgs.get(1)._value);
@@ -91,15 +98,16 @@ public class Scenarios {
         boolean leftExists = false, rightExists = false;
         int leftCount = 0, rightCount = 0, leftIndex = 0, rightIndex = 0;
         for (int i  =0; i < tokens.size(); i++) {
-            if (tokens.get(i)._commandName.equals("left")) {
+            if (tokens.get(i)._commandName.equals("--left")) {
                 leftExists = true;
                 leftCount++;
                 leftIndex = i;
-            }
-            if (tokens.get(i)._commandName.equals("right")) {
+            } else if (tokens.get(i)._commandName.equals("--right")) {
                 rightExists = true;
                 rightCount++;
                 rightIndex = i;
+            } else {
+                throw new IllegalArgumentException("Unknown arguments are not allowed.");
             }
         }
 
@@ -113,14 +121,24 @@ public class Scenarios {
         if ((tokens.size()>2&&!leftExists)||(leftExists&&tokens.size()>3)) {
             throw new IllegalArgumentException("Too many arguments.");
         }
+        if (leftExists) {
+            left = Double.valueOf(tokens.get(leftIndex)._value);
+        }
+        right = Double.valueOf(tokens.get(rightIndex)._value);
+        if (left - right <-2147483648) {
+            throw new IllegalArgumentException("End value cannot be less than -2147483648.");
+        }
+        if (left - right > 2147483647) {
+            throw new IllegalArgumentException("End value cannot be greater than 2147483647.");
+        }
         // if left isn't given put optional empty
         if (!leftExists) {
             resultMap.putIfAbsent("left", Optional.empty());
         } else {
-            resultMap.put("left", Double.valueOf(tokens.get(leftIndex)._value));
+            resultMap.put("left", left);
         }
         // if right is given, add it
-        resultMap.put("right", Double.valueOf(tokens.get(rightIndex)._value));
+        resultMap.put("right", right);
 
         return resultMap;
     }
@@ -131,8 +149,17 @@ public class Scenarios {
      */
     static Map<String, Object> sqrt(String arguments) {
         //TODO: Parse arguments and extract values.
-        int number = 0;
-        return Map.of("number", number);
+        List<Token> tokens = parseArguments(arguments);
+        if (tokens.size() != 1) {
+            throw new IllegalArgumentException("Sqrt requires 1 argument.");
+        }
+        if (!Objects.equals(tokens.getFirst()._typeName, "Integer")) {
+            throw new IllegalArgumentException("Argument must be an integer.");
+        }
+        if (Integer.parseInt(tokens.getFirst()._value)<0) {
+            throw new IllegalArgumentException("Argument must be 0 or larger.");
+        }
+        return Map.of("number", Integer.parseInt(tokens.getFirst()._value));
     }
 
     /**
@@ -143,7 +170,14 @@ public class Scenarios {
      */
     static Map<String, Object> calc(String arguments) {
         //TODO: Parse arguments and extract values.
-        String subcommand = "";
+        List<Token> tokens = parseArguments(arguments);
+        if (tokens.size()!= 1) {
+            throw new IllegalArgumentException("Calc requires 1 argument.");
+        }
+        String subcommand=tokens.getFirst()._value;
+        if (!Objects.equals(subcommand, "add")&&!Objects.equals(subcommand, "sub")&&!Objects.equals(subcommand, "div")&&!Objects.equals(subcommand, "sqrt")&&!Objects.equals(subcommand, "calc")&&!Objects.equals(subcommand, "date")&&!Objects.equals(subcommand, "help")){
+            throw new IllegalArgumentException("Subcommand is invalid.");
+        }
         return Map.of("subcommand", subcommand);
     }
 
@@ -156,7 +190,18 @@ public class Scenarios {
      */
     static Map<String, Object> date(String arguments) {
         //TODO: Parse arguments and extract values.
-        LocalDate date = LocalDate.EPOCH;
+        List<Token> tokens = parseArguments(arguments);
+        if (tokens.size()!=1) {
+            throw new IllegalArgumentException("Date requires 1 argument.");
+        }
+        if (!Objects.equals(tokens.getFirst()._typeName, "String")) {
+            throw new IllegalArgumentException("Argument is invalid.");
+        }
+        String value = tokens.getFirst()._value;
+        if (!value.matches("[1234567890]{4}-((0[1-9])|1[0-2])-((0[1-9])|1[0-2])")) {
+            throw new IllegalArgumentException("Date is invalid.");
+        }
+        LocalDate date = LocalDate.parse(value);
         return Map.of("date", date);
     }
 
@@ -165,9 +210,11 @@ public class Scenarios {
     //for notable features. This doesn't need to be exhaustive, but this is a
     //good place to test/showcase your functionality in context.
 
-    static String help(String input) {
-        Map<String, String> helpPages = new HashMap<String, String>();
-        helpPages.put("calc", """
+    static Map<String, Object> help(String input) {
+        List<Token> tokens = parseArguments(input);
+        if (tokens.size()==1) {
+            if (Objects.equals(tokens.getFirst()._value, "calc")) {
+                return Map.of("calc", """
                 \n
                 The calc command allows you to run basic math calculations in the CLI.
                 Available operations (command):
@@ -181,17 +228,19 @@ public class Scenarios {
                 calc sub 4 3 returns 1.
                 \n
                 """);
-        helpPages.put("date", """
+            } else if (Objects.equals(tokens.getFirst()._value, "date")) {
+                return Map.of("date", """
                 \n
                 The date command takes in a date string formatted yyyy-mm-dd and turns it into a date object.
                 The output is the date that you entered. If you provide no input, it returns today's date.
                 \n
                 """);
-
-        if (helpPages.containsKey(input)) {
-            return helpPages.get(input);
-        } else
-            return "The command (" + input + ") is invalid or has no help page.";
+            } else {
+                throw new IllegalArgumentException("Subcommand is invalid.");
+            }
+        } else {
+            throw new IllegalArgumentException("Calc requires 1 argument.");
+        }
     }
 
 }
