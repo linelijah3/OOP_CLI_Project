@@ -71,10 +71,10 @@ public class Scenarios {
         if (!Objects.equals(parsedArgs.get(0)._typeName, "Integer") || !Objects.equals(parsedArgs.get(1)._typeName, "Integer")) {
             throw new IllegalArgumentException("One of the arguments is not an integer");
         }
-        if (Double.valueOf(parsedArgs.get(0)._value) + Double.valueOf(parsedArgs.get(1)._value) <-2147483648) {
+        if (parseDouble(parsedArgs.get(0)._value) + parseDouble(parsedArgs.get(1)._value) <-2147483648) {
             throw new IllegalArgumentException("End value cannot be less than -2147483648.");
         }
-        if (Double.valueOf(parsedArgs.get(0)._value) + Double.valueOf(parsedArgs.get(1)._value) > 2147483647) {
+        if (parseDouble(parsedArgs.get(0)._value) + parseDouble(parsedArgs.get(1)._value) > 2147483647) {
             throw new IllegalArgumentException("End value cannot be greater than 2147483647.");
         }
         // cast the strings to int types
@@ -110,7 +110,6 @@ public class Scenarios {
                 throw new IllegalArgumentException("Unknown arguments are not allowed.");
             }
         }
-
         if (!rightExists) {
             throw new IllegalArgumentException("Right operand is required for the sub command.");
         }
@@ -118,13 +117,10 @@ public class Scenarios {
         if (leftCount>1||rightCount>1) {
             throw new IllegalArgumentException("Sub function expects at most one left argument and one right argument.");
         }
-        if ((tokens.size()>2&&!leftExists)||(leftExists&&tokens.size()>3)) {
-            throw new IllegalArgumentException("Too many arguments.");
-        }
         if (leftExists) {
-            left = Double.valueOf(tokens.get(leftIndex)._value);
+            left = parseDouble(tokens.get(leftIndex)._value);
         }
-        right = Double.valueOf(tokens.get(rightIndex)._value);
+        right = parseDouble(tokens.get(rightIndex)._value);
         if (left - right <-2147483648) {
             throw new IllegalArgumentException("End value cannot be less than -2147483648.");
         }

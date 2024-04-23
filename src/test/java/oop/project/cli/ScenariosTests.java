@@ -51,6 +51,8 @@ public class ScenariosTests {
         public static Stream<Arguments> testSub() {
             return Stream.of(
                 Arguments.of("Sub", "sub --left 1.0 --right 2.0", Map.of("left", 1.0, "right", 2.0)),
+                Arguments.of("Too many rights", "sub --left 1.0 --right 2.0 --right 1.0", null),
+                Arguments.of("Too many lefts", "sub --left 1.0 --left 2.0 --right 1.0", null),
                 Arguments.of("Left Only", "sub --left 1.0", null),
                 Arguments.of("Right Only", "sub --right 2.0", Map.of("left", Optional.empty(), "right", 2.0)),
                 Arguments.of("Missing Value", "sub --right", null),
@@ -59,6 +61,7 @@ public class ScenariosTests {
                 Arguments.of("Not A Number", "sub --right two", null),
                 Arguments.of("Overloaded sub function", "sub 1 2 3 4 5 6 7", null),
                 Arguments.of("empty", "sub", null),
+                Arguments.of("Incorrect format", "sub --left 1.0.0 --right -1.0" , null),
                 Arguments.of("Subtraction overflow", "sub --left 2147483647 --right -2147483647" , null),
                 Arguments.of("Subtraction underflow", "sub --left -2147483647 --right 2147483647" , null),
                 Arguments.of("No named arguments", "sub 1.0 2.0", null)
@@ -81,6 +84,8 @@ public class ScenariosTests {
                 Arguments.of("Valid", "sqrt 4", Map.of("number", 4)),
                 Arguments.of("Imperfect Square", "sqrt 3", Map.of("number", 3)),
                 Arguments.of("Zero", "sqrt 0", Map.of("number", 0)),
+                Arguments.of("Not an integer", "sqrt 1.0", null),
+                Arguments.of("String", "sqrt hi", null),
                 Arguments.of("Negative", "sqrt -1", null),
                 Arguments.of("empty", "sqrt", null),
                 Arguments.of("Additional arguments error", "sqrt 1 2", null)
@@ -103,6 +108,9 @@ public class ScenariosTests {
                 Arguments.of("Add", "calc add", Map.of("subcommand", "add")),
                 Arguments.of("Sub", "calc sub", Map.of("subcommand", "sub")),
                 Arguments.of("Sqrt", "calc sqrt", Map.of("subcommand", "sqrt")),
+                Arguments.of("Number", "calc 1", null),
+                Arguments.of("Too many arguments", "calc a a", null),
+                Arguments.of("Character", "calc a", null),
                 Arguments.of("Missing", "calc", null),
                 Arguments.of("Invalid", "calc unknown", null)
             );
@@ -123,6 +131,10 @@ public class ScenariosTests {
             return Stream.of(
                 Arguments.of("Date", "date 2024-01-01", Map.of("date", LocalDate.of(2024, 1, 1))),
                 Arguments.of("Invalid", "date 20240401", null),
+                Arguments.of("Too many arguments", "date 2024-01-01 2024-01-01", null),
+                Arguments.of("Almost valid formatting", "date 2024-4-01", null),
+                Arguments.of("Almost valid formatting 2", "date 2024-04-1", null),
+                Arguments.of("Almost valid formatting 3", "date 224-04-01", null),
                 Arguments.of("Valid formatting, invalid date", "date 2024-13-13", null)
             );
         }

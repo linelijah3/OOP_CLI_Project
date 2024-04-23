@@ -68,6 +68,9 @@ public class Parser {
                     }
                 }
             } else {
+                if (token._value.matches("-[123456789][1234567890]*")) {
+                    return "Integer";
+                }
                 for (int i = 0; i < token._value.length(); i++) {
                     if ((String.valueOf(token._value.charAt(i))).matches("[^1234567890]")) {
                         return "String";
