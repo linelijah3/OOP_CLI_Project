@@ -33,20 +33,22 @@ public class Scenarios {
 
     /**
     * Parser helper function that gets rid of white space within the inputted strings
-    * Uses regex in order to trim and split the arguments input
-    * May have to modify later on for other functionality, however, works for simple
-    * functions such as the add and subtract as of right now
+    * by calling the parser class. Uses regex in order to trim and split the arguments input
+    * May have to modify later on for other functionality, however, works for all test cases
+    * as of right now
     * @param arguments: <a String>
     * @return A List of Tokens that make up arguments
     * */
     private static List<Token> parseArguments(String arguments) {
-        Parser parser= new Parser();
+        Parser parser = new Parser();
         System.out.println("placeholder");
         return parser.parseArguments(arguments);
     }
 
     /**
-     *
+     * Parser helper function for sub, which requires doubles
+     * Takes in an object and returns it as a string, else
+     * throws an error displaying type received
      * @param obj: <int, Double, or String>
      * @return The value of obj as a Double
      */
@@ -222,6 +224,8 @@ public class Scenarios {
     //for notable features. This doesn't need to be exhaustive, but this is a
     //good place to test/showcase your functionality in context.
     /**
+     * Displays help menu for users to access if confused on how formatting should be
+     * within the CLI parser
      * Takes one positional argument:
      *  - {@code input: String}, which is either calc or date
      * @return A map containing the help text corresponding to the expected use of the input subcommand

@@ -5,6 +5,17 @@ import java.util.List;
 
 public class Parser {
     ArrayList<Token> tokenList;
+
+    /**
+     * Parses a string of arguments into the tokenList
+     * Categorizes each part of the input string and filters them
+     * as commands, subcommands, and arguments
+     * Commands and subcommands that are caught are then used to create
+     * their corresponding tokens
+     * @param arguments the string containing the CLI input string
+     * @return a list of the tokens stored in tokenList, such as the
+     * commands, subcommands, etc
+     * */
     List<Token> parseArguments(String arguments) {
         String[] tempTokens = arguments.trim().split("\\s+");
         List<Token> tokenList = new ArrayList<>();
@@ -40,6 +51,16 @@ public class Parser {
         }
         return tokenList;
     }
+
+    /**
+     * Determines the type of data being taken in by the value of the token passed
+     * It classifies the token's value based on its traits such as single character
+     * length, more than one character string, numeric strings, numeric strings with
+     * a decimal point, and other formats that fall under String.
+     * @param token object taken in to be classified
+     * @return a string representing the token passed in, such as an integer, double,
+     * or else return error for invalid formatting
+     * */
     String parseType(Token token) {
         //1 char and not int -> char
         //multiple chars and not int or double -> string
