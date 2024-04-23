@@ -26,6 +26,7 @@ public class Scenarios {
             case "sqrt" -> sqrt(arguments);
             case "calc" -> calc(arguments);
             case "date" -> date(arguments);
+            case "help" -> help(arguments);
             default -> throw new IllegalArgumentException("Unknown command.");
         };
     }
@@ -35,26 +36,20 @@ public class Scenarios {
     * Uses regex in order to trim and split the arguments input
     * May have to modify later on for other functionality, however, works for simple
     * functions such as the add and subtract as of right now
+    * @param arguments: <a String>
+    * @return A List of Tokens that make up arguments
     * */
-    private static List<Object> parseArguments(String arguments) {
-        Parser parser;
+    private static List<Token> parseArguments(String arguments) {
+        Parser parser= new Parser();
         System.out.println("placeholder");
-        parser
-        String[] tokens = arguments.trim().split("\\s+");
-        // //s+ will get rid of white space in the arguments passed in
-        // https://mkyong.com/java/how-to-remove-whitespace-between-string-java/#:~:text=1.,Regex%20explanation.
-        List<Object> parsedArgs = new ArrayList<>();
-        for (String token : tokens) {
-            try {
-                parsedArgs.add(Integer.parseInt(token));
-            }
-            catch (NumberFormatException e) {
-                parsedArgs.add(token);
-            }
-        }
-        return parsedArgs;
+        return parser.parseArguments(arguments);
     }
 
+    /**
+     *
+     * @param obj: <int, Double, or String>
+     * @return The value of obj as a Double
+     */
     private static Double parseDouble(Object obj) {
         try {
             return Double.parseDouble(obj.toString());
@@ -65,14 +60,15 @@ public class Scenarios {
 
     /**
      * Takes two positional arguments:
-     *  - {@code left: <your integer type>}
-     *  - {@code right: <your integer type>}
+     *  - {@code left: <int>}
+     *  - {@code right: <int>}
      *  - add 1 2
      *  - left is 1, right is 2
+     * @return A map with left and right
      */
     private static Map<String, Object> add(String arguments) {
         //TODO: Parse arguments and extract values.
-        List<Object> parsedArgs = parseArguments(arguments);
+        List<Token> parsedArgs = parseArguments(arguments);
         System.out.println("this is for the add function indices");
         System.out.println("this is the first arg index 0: " + parsedArgs.get(0));
         System.out.println("this is the first arg index 1: " + parsedArgs.get(1));
@@ -80,47 +76,76 @@ public class Scenarios {
         if (parsedArgs.size() != 2) {
             throw new IllegalArgumentException("The add function expects two integer input values");
         }
-        if (!(parsedArgs.get(0) instanceof Integer) || !(parsedArgs.get(1) instanceof Integer)) {
+        if (!Objects.equals(parsedArgs.get(0)._typeName, "Integer") || !Objects.equals(parsedArgs.get(1)._typeName, "Integer")) {
             throw new IllegalArgumentException("One of the arguments is not an integer");
         }
+        if (parseDouble(parsedArgs.get(0)._value) + parseDouble(parsedArgs.get(1)._value) <-2147483648) {
+            throw new IllegalArgumentException("End value cannot be less than -2147483648.");
+        }
+        if (parseDouble(parsedArgs.get(0)._value) + parseDouble(parsedArgs.get(1)._value) > 2147483647) {
+            throw new IllegalArgumentException("End value cannot be greater than 2147483647.");
+        }
         // cast the strings to int types
-        int left = (int) parsedArgs.get(0);
-        int right = (int) parsedArgs.get(1);
+        int left = Integer.valueOf(parsedArgs.get(0)._value);
+        int right = Integer.valueOf(parsedArgs.get(1)._value);
         return Map.of("left", left, "right", right);
     }
 
     /**
      * Takes two <em>named</em> arguments:
-     *  - {@code left: <your decimal type>} (optional)
+     *  - {@code left: <Double>} (optional)
      *     - If your project supports default arguments, you could also parse
      *       this as a non-optional decimal value using a default of 0.0.
-     *  - {@code right: <your decimal type>} (required)
+     *  - {@code right: <Double>} (required)
+     *  sub --right 1.0 --left 2.0
+     *  left is 2.0, right is 1.0
+     *  sub --right 1
+     *  left is 0.0, right is 1.0
+     *  @return A map with left and right and their values (if valid)
      */
     static Map<String, Object> sub(String arguments) {
-        List<Object> tokens = parseArguments(arguments);
+        List<Token> tokens = parseArguments(arguments);
         Map<String, Object> resultMap = new HashMap<>();
-//        Double left = 0.0;
+        Double left = 0.0;
         Double right = null;
-
-        for (int i = 0; i < tokens.size(); i++) {
-            String token = tokens.get(i).toString();
-            if ("--left".equals(token) && i + 1 < tokens.size()) {
-                resultMap.put("left", parseDouble(tokens.get(++i)));
-            } else if ("--right".equals(token) && i + 1 < tokens.size()) {
-                right = parseDouble(tokens.get(++i));
+        boolean leftExists = false, rightExists = false;
+        int leftCount = 0, rightCount = 0, leftIndex = 0, rightIndex = 0;
+        for (int i  =0; i < tokens.size(); i++) {
+            if (tokens.get(i)._commandName.equals("--left")&& Objects.equals(tokens.get(i)._typeName, "Double")) {
+                leftExists = true;
+                leftCount++;
+                leftIndex = i;
+            } else if (tokens.get(i)._commandName.equals("--right")&& Objects.equals(tokens.get(i)._typeName, "Double")) {
+                rightExists = true;
+                rightCount++;
+                rightIndex = i;
+            } else {
+                throw new IllegalArgumentException("Unknown arguments are not allowed.");
             }
         }
-
-        if (right == null) {
+        if (!rightExists) {
             throw new IllegalArgumentException("Right operand is required for the sub command.");
         }
 
-        if (!resultMap.containsKey("left") && tokens.size() > 2) {
-            throw new IllegalArgumentException("Sub function expects at most one left argument and one right argument");
+        if (leftCount>1||rightCount>1) {
+            throw new IllegalArgumentException("Sub function expects at most one left argument and one right argument.");
         }
-
+        if (leftExists) {
+            left = parseDouble(tokens.get(leftIndex)._value);
+        }
+        right = parseDouble(tokens.get(rightIndex)._value);
+        if (left - right <-2147483648) {
+            throw new IllegalArgumentException("End value cannot be less than -2147483648.");
+        }
+        if (left - right > 2147483647) {
+            throw new IllegalArgumentException("End value cannot be greater than 2147483647.");
+        }
         // if left isn't given put optional empty
-        resultMap.putIfAbsent("left", Optional.empty());
+        if (!leftExists) {
+            resultMap.putIfAbsent("left", Optional.empty());
+        } else {
+            resultMap.put("left", left);
+        }
         // if right is given, add it
         resultMap.put("right", right);
 
@@ -130,11 +155,21 @@ public class Scenarios {
     /**
      * Takes one positional argument:
      *  - {@code number: <your integer type>} where {@code number >= 0}
+     * @return A map containing the number (if valid) and its value
      */
     static Map<String, Object> sqrt(String arguments) {
         //TODO: Parse arguments and extract values.
-        int number = 0;
-        return Map.of("number", number);
+        List<Token> tokens = parseArguments(arguments);
+        if (tokens.size() != 1) {
+            throw new IllegalArgumentException("Sqrt requires 1 argument.");
+        }
+        if (!Objects.equals(tokens.getFirst()._typeName, "Integer")) {
+            throw new IllegalArgumentException("Argument must be an integer.");
+        }
+        if (Integer.parseInt(tokens.getFirst()._value)<0) {
+            throw new IllegalArgumentException("Argument must be 0 or larger.");
+        }
+        return Map.of("number", Integer.parseInt(tokens.getFirst()._value));
     }
 
     /**
@@ -142,10 +177,18 @@ public class Scenarios {
      *  - {@code subcommand: "add" | "div" | "sqrt" }, aka one of these values.
      *     - Note: Not all projects support subcommands, but if yours does you
      *       may want to take advantage of this scenario for that.
+     * @return A map containing the subcommand and its name (if valid)
      */
     static Map<String, Object> calc(String arguments) {
         //TODO: Parse arguments and extract values.
-        String subcommand = "";
+        List<Token> tokens = parseArguments(arguments);
+        if (tokens.size()!= 1) {
+            throw new IllegalArgumentException("Calc requires 1 argument.");
+        }
+        String subcommand=tokens.getFirst()._value;
+        if (!Objects.equals(subcommand, "add")&&!Objects.equals(subcommand, "sub")&&!Objects.equals(subcommand, "div")&&!Objects.equals(subcommand, "sqrt")&&!Objects.equals(subcommand, "calc")&&!Objects.equals(subcommand, "date")&&!Objects.equals(subcommand, "help")){
+            throw new IllegalArgumentException("Subcommand is invalid.");
+        }
         return Map.of("subcommand", subcommand);
     }
 
@@ -155,10 +198,22 @@ public class Scenarios {
      *    object (say at least yyyy-mm-dd, or whatever you prefer).
      *     - Note: Consider this a type that CANNOT be supported by your library
      *       out of the box and requires a custom type to be defined.
+     * @return A map containing the date as a LocalDate object (if valid)
      */
     static Map<String, Object> date(String arguments) {
         //TODO: Parse arguments and extract values.
-        LocalDate date = LocalDate.EPOCH;
+        List<Token> tokens = parseArguments(arguments);
+        if (tokens.size()!=1) {
+            throw new IllegalArgumentException("Date requires 1 argument.");
+        }
+        if (!Objects.equals(tokens.getFirst()._typeName, "String")) {
+            throw new IllegalArgumentException("Argument is invalid.");
+        }
+        String value = tokens.getFirst()._value;
+        if (!value.matches("[1234567890]{4}-((0[1-9])|1[0-2])-((0[1-9])|1[0-2])")) {
+            throw new IllegalArgumentException("Date is invalid.");
+        }
+        LocalDate date = LocalDate.parse(value);
         return Map.of("date", date);
     }
 
@@ -166,10 +221,16 @@ public class Scenarios {
     //should have a couple from pain points at least, and likely some others
     //for notable features. This doesn't need to be exhaustive, but this is a
     //good place to test/showcase your functionality in context.
-
-    static String help(String input) {
-        Map<String, String> helpPages = new HashMap<String, String>();
-        helpPages.put("calc", """
+    /**
+     * Takes one positional argument:
+     *  - {@code input: String}, which is either calc or date
+     * @return A map containing the help text corresponding to the expected use of the input subcommand
+     */
+    static Map<String, Object> help(String input) {
+        List<Token> tokens = parseArguments(input);
+        if (tokens.size()==1) {
+            if (Objects.equals(tokens.getFirst()._value, "calc")) {
+                return Map.of("calc", """
                 \n
                 The calc command allows you to run basic math calculations in the CLI.
                 Available operations (command):
@@ -183,17 +244,19 @@ public class Scenarios {
                 calc sub 4 3 returns 1.
                 \n
                 """);
-        helpPages.put("date", """
+            } else if (Objects.equals(tokens.getFirst()._value, "date")) {
+                return Map.of("date", """
                 \n
                 The date command takes in a date string formatted yyyy-mm-dd and turns it into a date object.
                 The output is the date that you entered. If you provide no input, it returns today's date.
                 \n
                 """);
-
-        if (helpPages.containsKey(input)) {
-            return helpPages.get(input);
-        } else
-            return "The command (" + input + ") is invalid or has no help page.";
+            } else {
+                throw new IllegalArgumentException("Subcommand is invalid.");
+            }
+        } else {
+            throw new IllegalArgumentException("Help requires 1 argument.");
+        }
     }
 
 }

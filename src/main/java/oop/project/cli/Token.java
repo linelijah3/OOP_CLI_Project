@@ -5,18 +5,6 @@ public class Token {
     String _value = "";
     String _commandName = "";
 
-    String getTypeName() {
-        return _typeName;
-    }
-
-    String getValue() {
-        return _value;
-    }
-
-    String getCommandName() {
-        return _commandName;
-    }
-
     Token(String typeName, String value) {
         _typeName = typeName;
         _value = value;
@@ -24,5 +12,8 @@ public class Token {
 
     void setCommandName(String commandName) {
         _commandName = commandName;
+    }
+    void setTypeName(String typeName) {
+        _typeName = typeName;
     }
 }
