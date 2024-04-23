@@ -141,6 +141,44 @@ public class ScenariosTests {
 
     }
 
+    @Nested
+    class Help {
+
+        @ParameterizedTest
+        @MethodSource
+        public void testHelp(String name, String command, Object expected) {
+            test(command, expected);
+        }
+
+        public static Stream<Arguments> testHelp() {
+            return Stream.of(
+                    Arguments.of("Calc", "help calc", Map.of("calc", """
+                \n
+                The calc command allows you to run basic math calculations in the CLI.
+                Available operations (command):
+                1. Addition (add)
+                2. Subtraction (sub)
+                3. Square Root (sqrt)
+                
+                Calc is used by entering (calc) followed by the operation, then the input.
+                For example: calc add 1 2 returns 3
+                calc sqrt 4 returns 2
+                calc sub 4 3 returns 1.
+                \n
+                """)),
+                    Arguments.of("date", "help date", Map.of("date", """
+                \n
+                The date command takes in a date string formatted yyyy-mm-dd and turns it into a date object.
+                The output is the date that you entered. If you provide no input, it returns today's date.
+                \n
+                """)),
+                    Arguments.of("Too many arguments", "help date date", null),
+                    Arguments.of("No arguments", "help", null)
+            );
+        }
+
+    }
+
     private static void test(String command, Object expected) {
         if (expected != null) {
             var result = Scenarios.parse(command);

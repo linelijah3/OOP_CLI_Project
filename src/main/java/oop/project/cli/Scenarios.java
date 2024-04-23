@@ -235,7 +235,7 @@ public class Scenarios {
                 throw new IllegalArgumentException("Subcommand is invalid.");
             }
         } else {
-            throw new IllegalArgumentException("Calc requires 1 argument.");
+            throw new IllegalArgumentException("Help requires 1 argument.");
         }
     }
 
